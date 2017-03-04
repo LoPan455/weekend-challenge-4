@@ -11,6 +11,15 @@ $(document).ready(function(){
       url: 'tasks/getTasks',
       success: function(response){
         console.log('we got a response from the server: ', response);
+        for (var i = 0; i < response.length; i++) {
+          var taskToWrite = response[i];
+          $('#taskGrid').append('<tr><td>'+ taskToWrite.task_name +'</td>'+
+            '<td><button type="button" id="completeButton" data-taskid="'+taskToWrite.id+'"'+ 'name="button">Completed!</button></td>'+
+            '<td><button type="button" id="deleteButton" data-taskid="'+taskToWrite.id+'"'+ 'name="button">Delete</button></td></tr>'
+
+
+          )//end toDoListHeaders.append statement
+        }//end for Loop
       }
     });
 
