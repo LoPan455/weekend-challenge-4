@@ -13,3 +13,7 @@ td, th {
 tr:nth-child(even) {
     background-color: #dddddd;
 }
+
+.completed {
+  text-decoration-style: line-through;
+}

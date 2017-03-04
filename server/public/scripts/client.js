@@ -28,8 +28,10 @@ $(document).ready(function(){
     //listener for the task delete button
     $('#taskGrid').on('click','.deleteButton',function(){
       console.log('delete button clicked');
-      var taskIdToDelete = $(this).data('taskid');
+      var taskIdToDelete ={}
+      taskIdToDelete.id = $(this).data('taskid');
       console.log('taskID to delete is: ',taskIdToDelete);
+      $(this).parent().parent().remove();
       // POST request to write new task to the db
       $.ajax({
         type: 'DELETE',
