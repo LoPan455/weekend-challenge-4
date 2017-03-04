@@ -2,31 +2,14 @@ console.log('JS has been sourced properly');
 
 $(document).ready(function(){
   console.log('jQuery has been sourced properly');
+  writeTasksToDom();
 
-
-
-  //GET reqeust to pull from DB
-    $.ajax({
-      type: 'GET',
-      url: 'tasks/getTasks',
-      success: function(response){
-        console.log('we got a response from the server: ', response);
-        for (var i = 0; i < response.length; i++) {
-          var taskToWrite = response[i];
-          $('#taskGrid').append('<tr><td>'+ taskToWrite.task_name +'</td>'+
-            '<td><button type="button" id="completeButton" data-taskid="'+taskToWrite.id+'"'+ 'name="button">Completed!</button></td>'+
-            '<td><button type="button" id="deleteButton" data-taskid="'+taskToWrite.id+'"'+ 'name="button">Delete</button></td></tr>'
-
-
-          )//end toDoListHeaders.append statement
-        }//end for Loop
-      }
-    });
 
   //listener for the task submit button
     $('#newTaskSubmitButton').on('click',function(){
       console.log('submit button clicked');
       var newTaskName = $('#taskNameInput').val();
+      console.log('I picked up this task name: ',newTaskName);
       // POST request to write new task to the db
       $.ajax({
         type: 'POST',
@@ -85,3 +68,23 @@ $(document).ready(function(){
 
 
 }); //end of document.ready
+
+
+//GET reqeust to pull from DB
+function writeTasksToDom(){
+  $.ajax({
+    type: 'GET',
+    url: 'tasks/getTasks',
+    success: function(response){
+      console.log('we got a response from the server: ', response);
+      for (var i = 0; i < response.length; i++) {
+        var taskToWrite = response[i];
+        $('#taskGrid').append('<tr><td>'+ taskToWrite.task_name +'</td>'+
+          '<td><button type="button" id="completeButton" data-taskid="'+taskToWrite.id+'"'+ 'name="button">Completed!</button></td>'+
+          '<td><button type="button" id="deleteButton" data-taskid="'+taskToWrite.id+'"'+ 'name="button">Delete</button></td></tr>'
+        )//end toDoListHeaders.append statement
+      }//end for Loop
+    }
+  });
+
+}
