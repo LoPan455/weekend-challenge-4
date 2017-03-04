@@ -8,7 +8,8 @@ $(document).ready(function(){
   //listener for the task submit button
     $('#newTaskSubmitButton').on('click',function(){
       console.log('submit button clicked');
-      var newTaskName = $('#taskNameInput').val();
+      var newTaskName = {}
+      newTaskName.task_name = $('#taskNameInput').val();
       console.log('I picked up this task name: ',newTaskName);
       // POST request to write new task to the db
       $.ajax({
@@ -17,11 +18,13 @@ $(document).ready(function(){
         data: newTaskName,
         success: function(response){
           console.log('submit successful, server response: ',response);
+          writeTasksToDom();
         },
         error: function(response){
           console.log('error on submit',response);
         }
       })//end ajax
+
     });// end submit button event handler
 
 
@@ -77,13 +80,17 @@ function writeTasksToDom(){
     url: 'tasks/getTasks',
     success: function(response){
       console.log('we got a response from the server: ', response);
+      //concat the html to be added to the dom for each item in the array
+      var htmlToAppend = '';
       for (var i = 0; i < response.length; i++) {
         var taskToWrite = response[i];
-        $('#taskGrid').append('<tr><td>'+ taskToWrite.task_name +'</td>'+
+        var newRowHTML = '<tr><td>'+ taskToWrite.task_name +'</td>'+
           '<td><button type="button" id="completeButton" data-taskid="'+taskToWrite.id+'"'+ 'name="button">Completed!</button></td>'+
-          '<td><button type="button" id="deleteButton" data-taskid="'+taskToWrite.id+'"'+ 'name="button">Delete</button></td></tr>'
-        )//end toDoListHeaders.append statement
+          '<td><button type="button" id="deleteButton" data-taskid="'+taskToWrite.id+'"'+ 'name="button">Delete</button></td></tr>';
+        htmlToAppend += newRowHTML
       }//end for Loop
+      $('#taskGrid').empty();
+      $('#taskGrid').append(htmlToAppend);
     }
   });
 

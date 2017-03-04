@@ -36,35 +36,37 @@ router.get('/getTasks', function(req,res){
 }); // end router.get for /getTasks
 
 
-// // POST routes
-//
+// POST routes
+
 router.post('/submitTask', function(req,res){
   console.log('/submitTask hit successfully');
   var newTask = req.body
   console.log('newTask is set to: ',newTask);
-});
-//   //connect to the db with a connection from the pool
-//     pool.connect(function(errorConnectingToDatabase, client, done){
-//       if(errorConnectingToDatabase) {
+
+  //connect to the db with a connection from the pool
+    pool.connect(function(errorConnectingToDatabase, client, done){
+      if(errorConnectingToDatabase) {
 //         // There was an error connecting to the database
-//         console.log('Error connecting to database: ', errorConnectingToDatabase);
-//         res.sendStatus(500);
-//       } else {
-//         // We connected to the database!!!
-//         // Now, we're gonna' ADD stuff!!!!!
-//         client.query('  INSERT INTO tasks (task_name)'+
-//           ' VALUES ('+newTask+');', function(errorMakingQuery, result){
-//           done();
-//           if(errorMakingQuery) {
-//             console.log('Error making the database query: ', errorMakingQuery);
-//             res.sendStatus(500);
-//           } else {
-//             res.send(result.rows);
-//           }
-//         });
-//       }
-//     });
-//   }); // end router.get for /getTasks
+        console.log('Error connecting to database: ', errorConnectingToDatabase);
+        res.sendStatus(500);
+      } else {
+        // We connected to the database!!!
+       // Now, we're gonna' ADD stuff!!!!!
+         client.query('INSERT INTO tasks (task_name) ' +
+         'VALUES ($1);',
+         [newTask.task_name],
+         function(errorMakingQuery, result){
+          done();
+          if(errorMakingQuery) {
+            console.log('Error making the database query: ', errorMakingQuery);
+            res.sendStatus(500);
+          } else {
+            res.sendStatus(201);
+          }//end else
+        });//end client.query()
+      }//end else
+    });//end pool.connect()
+  }); // end router.get for /submitTasks
 
 
 
