@@ -29,13 +29,29 @@ $(document).ready(function(){
         error: function(response){
           console.log('error on submit',response);
         }
-      })
-    });
+      })//end ajax
+    });// end submit button event handler
 
 
 
-//DELETE request to delete an item
-
+  //DELETE request to delete an item
+    $('#deleteButton').on('click',function(){
+      console.log('delete button clicked');
+      var taskIdToDelete = $(this).data('taskid');
+      console.log('taskID to delete is: ',taskIdToDelete);
+      // POST request to write new task to the db
+      $.ajax({
+        type: 'DELETE',
+        url: '/tasks/deleteTask',
+        data: taskIdToDelete,
+        success: function(response){
+          console.log('submit successful, server response: ',response);
+        },
+        error: function(response){
+          console.log('error on submit',response);
+        }
+      });// end ajax
+    }); // and DELETE button listener
 
 
 
