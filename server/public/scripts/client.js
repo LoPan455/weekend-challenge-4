@@ -4,11 +4,10 @@ $(document).ready(function(){
   console.log('jQuery has been sourced properly');
   writeTasksToDom();
 
-
-  //listener for the task submit button
+    //listener for the new task submit button
     $('#newTaskSubmitButton').on('click',function(){
       console.log('submit button clicked');
-      var newTaskName = {}
+      var newTaskName = {};
       newTaskName.task_name = $('#taskNameInput').val();
       console.log('I picked up this task name: ',newTaskName);
       // POST request to write new task to the db
@@ -23,14 +22,11 @@ $(document).ready(function(){
         error: function(response){
           console.log('error on submit',response);
         }
-      })//end ajax
-
+      });//end ajax
     });// end submit button event handler
 
-
-
-  //listener for the task delete button
-    $('#deleteButton').on('click',function(){
+    //listener for the task delete button
+    $('#taskGrid').on('click','.deleteButton',function(){
       console.log('delete button clicked');
       var taskIdToDelete = $(this).data('taskid');
       console.log('taskID to delete is: ',taskIdToDelete);
@@ -48,10 +44,9 @@ $(document).ready(function(){
       });// end ajax
     }); // end DELETE button listener
 
-  // listener for the task complete button
-
-    $('#completeButton').on('click',function(){
-      console.log('complete button clicked');
+    // listener for the task complete button
+    $('#taskGrid').on('click','.completeButton',function(){
+      console.log('complete Button clicked');
       var taskIdToComplete = $(this).data('taskid');
       console.log('taskID to complete is: ',taskIdToComplete);
       // POST request to write new task to the db
@@ -85,8 +80,8 @@ function writeTasksToDom(){
       for (var i = 0; i < response.length; i++) {
         var taskToWrite = response[i];
         var newRowHTML = '<tr><td>'+ taskToWrite.task_name +'</td>'+
-          '<td><button type="button" id="completeButton" data-taskid="'+taskToWrite.id+'"'+ 'name="button">Completed!</button></td>'+
-          '<td><button type="button" id="deleteButton" data-taskid="'+taskToWrite.id+'"'+ 'name="button">Delete</button></td></tr>';
+          '<td><button type="button" class="button completeButton" data-taskid="'+taskToWrite.id+'"'+ 'name="button">Completed!</button></td>'+
+          '<td><button type="button" class="button deleteButton" data-taskid="'+taskToWrite.id+'"'+ 'name="button">Delete</button></td></tr>';
         htmlToAppend += newRowHTML
       }//end for Loop
       $('#taskGrid').empty();
