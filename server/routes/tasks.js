@@ -22,6 +22,11 @@ router.post('/submitTask', function(req,res){
   res.sendStatus(200);
 });
 
+router.post('/completeTask',function(req,res){
+  console.log('/completeTask hit successfully');
+  res.sendStatus(200);
+})
+
 // DELETE routes
 
 router.delete('/deleteTask', function (req,res){

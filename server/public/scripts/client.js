@@ -51,7 +51,28 @@ $(document).ready(function(){
           console.log('error on submit',response);
         }
       });// end ajax
-    }); // and DELETE button listener
+    }); // end DELETE button listener
+
+  //UPDATE request to change task to 'complete'
+
+  //DELETE request to delete an item
+    $('#completeButton').on('click',function(){
+      console.log('complete button clicked');
+      var taskIdToComplete = $(this).data('taskid');
+      console.log('taskID to complete is: ',taskIdToComplete);
+      // POST request to write new task to the db
+      $.ajax({
+        type: 'POST',
+        url: '/tasks/completeTask',
+        data: taskIdToComplete,
+        success: function(response){
+          console.log('submit successful, server response: ',response);
+        },
+        error: function(response){
+          console.log('error on submit',response);
+        }
+      });// end ajax
+    }); // end COMPLETE button listener
 
 
 
