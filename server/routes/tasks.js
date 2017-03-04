@@ -12,6 +12,14 @@ var config = {
 // GET routes
 router.get('/getTasks', function(req,res){
   console.log('/getTasks URL has been reached');
+  res.sendStatus(200);
+})
+
+// POST routes
+
+router.post('/submitTask', function(req,res){
+  console.log('/submitTask hit successfully');
+  res.sendStatus(200);
 })
 
 

@@ -3,9 +3,9 @@ console.log('JS has been sourced properly');
 $(document).ready(function(){
   console.log('jQuery has been sourced properly');
 
-  //listener for the task submit button
 
-  //get rqeust to pull from DB
+
+  //GET reqeust to pull from DB
     $.ajax({
       type: 'GET',
       url: 'tasks/getTasks',
@@ -14,7 +14,25 @@ $(document).ready(function(){
       }
     });
 
-//post request to create a new item in the db
+  //listener for the task submit button
+    $('#newTaskSubmitButton').on('click',function(){
+      console.log('submit button clicked');
+      var newTaskName = $('#taskNameInput').val();
+      // POST request to write new task to the db
+      $.ajax({
+        type: 'POST',
+        url: '/tasks/submitTask',
+        data: newTaskName,
+        success: function(response){
+          console.log('submit successful, server response: ',response);
+        },
+        error: function(response){
+          console.log('error on submit',response);
+        }
+      })
+    });
+
+
 
 //DELETE request to delete an item
 
