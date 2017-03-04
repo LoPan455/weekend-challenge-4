@@ -49,11 +49,13 @@ $(document).ready(function(){
     // listener for the task complete button
     $('#taskGrid').on('click','.completeButton',function(){
       console.log('complete Button clicked');
-      var taskIdToComplete = $(this).data('taskid');
+      var taskIdToComplete = {}
+      taskIdToComplete.id = $(this).data('taskid');
+      $(this).parent().prev().addClass('complete');
       console.log('taskID to complete is: ',taskIdToComplete);
       // POST request to write new task to the db
       $.ajax({
-        type: 'POST',
+        type: 'PUT',
         url: '/tasks/completeTask',
         data: taskIdToComplete,
         success: function(response){

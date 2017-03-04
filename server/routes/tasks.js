@@ -68,7 +68,7 @@ router.post('/submitTask', function(req,res){
   }); // end router.get for /submitTasks
 
 
-  //Delete tasks
+  //DELETE Routes
   router.delete('/deleteTask', function(req,res){
   console.log('/deleteTask hit successfully');
   var taskToDelete =req.body;
@@ -98,25 +98,14 @@ router.post('/submitTask', function(req,res){
     });//end pool.connect()
   }); // end router.get for /deleteTasks
 
+//PUT route
 
-
-
-
-
-
-
-
-
-router.post('/completeTask',function(req,res){
+router.put('/completeTask', function(req,res){
   console.log('/completeTask hit successfully');
-  res.sendStatus(200);
-})
-
-// DELETE routes
-
-router.delete('/deleteTask', function (req,res){
-  console.log('/deleteTask hit succesfully');
-  res.sendStatus(200);
+  var taskToComplete = req.body;
+  console.log('taskToComplete is set to: ',taskToComplete);
 });
+
+
 
 module.exports = router;
