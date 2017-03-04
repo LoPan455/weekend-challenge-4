@@ -34,7 +34,7 @@ $(document).ready(function(){
 
 
 
-  //DELETE request to delete an item
+  //listener for the task delete button
     $('#deleteButton').on('click',function(){
       console.log('delete button clicked');
       var taskIdToDelete = $(this).data('taskid');
@@ -53,9 +53,8 @@ $(document).ready(function(){
       });// end ajax
     }); // end DELETE button listener
 
-  //UPDATE request to change task to 'complete'
+  // listener for the task complete button
 
-  //DELETE request to delete an item
     $('#completeButton').on('click',function(){
       console.log('complete button clicked');
       var taskIdToComplete = $(this).data('taskid');
