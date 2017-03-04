@@ -3,15 +3,16 @@ console.log('JS has been sourced properly');
 $(document).ready(function(){
   console.log('jQuery has been sourced properly');
 
+  //listener for the task submit button
 
-//get rqeust to pull from DB
-  $.ajax({
-    type: 'GET',
-    url: 'tasks/getTasks',
-    success: function(response){
-      console.log('we got a response from the server: ', response);
-    }
-  })
+  //get rqeust to pull from DB
+    $.ajax({
+      type: 'GET',
+      url: 'tasks/getTasks',
+      success: function(response){
+        console.log('we got a response from the server: ', response);
+      }
+    });
 
 //post request to create a new item in the db
 
