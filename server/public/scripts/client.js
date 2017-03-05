@@ -26,7 +26,7 @@ $(document).ready(function(){
     });// end submit button event handler
 
     //listener for the task delete button
-    $('#taskGrid').on('click','.deleteButton',function(){
+    $('#taskItems').on('click','.deleteButton',function(){
       console.log('delete button clicked');
       var taskIdToDelete ={}
       taskIdToDelete.id = $(this).data('taskid');
@@ -47,13 +47,13 @@ $(document).ready(function(){
     }); // end DELETE button listener
 
     // listener for the task complete button
-    $('#taskGrid').on('click','.completeButton',function(){
+    $('#taskItems').on('click','.completeButton',function(){
       console.log('complete Button clicked');
       var taskIdToComplete = {}
       taskIdToComplete.id = $(this).data('taskid');
       $(this).parent().prev().addClass('complete');
       console.log('taskID to complete is: ',taskIdToComplete);
-      // POST request to write new task to the db
+      // POST request to update  the db
       $.ajax({
         type: 'PUT',
         url: '/tasks/completeTask',
@@ -88,8 +88,8 @@ function writeTasksToDom(){
           '<td><button type="button" class="button deleteButton" data-taskid="'+taskToWrite.id+'"'+ 'name="button">Delete</button></td></tr>';
         htmlToAppend += newRowHTML
       }//end for Loop
-      $('#taskGrid').empty();
-      $('#taskGrid').append(htmlToAppend);
+      $('#taskItems').empty();
+      $('#taskItems').append(htmlToAppend);
     }
   });
 

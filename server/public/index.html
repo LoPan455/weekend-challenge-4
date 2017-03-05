@@ -20,16 +20,22 @@
   </container>
 
   <container id="incompleteTasks">
-    <table id="taskGrid">
+    <table id>
+      <thead id="taskTableHeaders">
       <tr>
         <th>To Do Item</th>
         <th>Complete?</th>
         <th>Delete?</th>
       </tr>
-
+      </thead>
+      <tbody id="taskItems">
+      </tbody>
     </table>
   </container>
 
-  <container id="completedTasks"
+  <container id="completedTasks">
+    <label for="testCheckbox">Test Checkbox</label>
+    <input type="checkbox" id="testCheckbox"name="testCheckbox" value="">
+  </container>
 </body>
 </html>

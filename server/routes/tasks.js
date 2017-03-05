@@ -37,7 +37,6 @@ router.get('/getTasks', function(req,res){
 
 
 // POST routes
-
 router.post('/submitTask', function(req,res){
   console.log('/submitTask hit successfully');
   var newTask = req.body
@@ -45,7 +44,7 @@ router.post('/submitTask', function(req,res){
   //connect to the db with a connection from the pool
     pool.connect(function(errorConnectingToDatabase, client, done){
       if(errorConnectingToDatabase) {
-//         // There was an error connecting to the database
+        // There was an error connecting to the database
         console.log('Error connecting to database: ', errorConnectingToDatabase);
         res.sendStatus(500);
       } else {
@@ -68,35 +67,35 @@ router.post('/submitTask', function(req,res){
   }); // end router.get for /submitTasks
 
 
-  //DELETE Routes
-  router.delete('/deleteTask', function(req,res){
-  console.log('/deleteTask hit successfully');
-  var taskToDelete =req.body;
-  console.log('taskToDelete is set to: ',taskToDelete);
-  //connect to the db with a connection from the pool
-  pool.connect(function(errorConnectingToDatabase, client, done){
-    if(errorConnectingToDatabase) {
-      // There was an error connecting to the database
-      console.log('Error connecting to database: ', errorConnectingToDatabase);
-      res.sendStatus(500);
-      } else {
-        // We connected to the database!!!
+//DELETE Routes
+router.delete('/deleteTask', function(req,res){
+console.log('/deleteTask hit successfully');
+var taskToDelete =req.body;
+console.log('taskToDelete is set to: ',taskToDelete);
+//connect to the db with a connection from the pool
+pool.connect(function(errorConnectingToDatabase, client, done){
+  if(errorConnectingToDatabase) {
+    // There was an error connecting to the database
+    console.log('Error connecting to database: ', errorConnectingToDatabase);
+    res.sendStatus(500);
+  } else {
+    // We connected to the database!!!
         // Now, we're gonna' ADD stuff!!!!!
-        client.query('DELETE FROM tasks ' +
-        'WHERE id=$1;',
-        [taskToDelete.id],
-        function(errorMakingQuery, result){
-        done();
-        if(errorMakingQuery) {
-          console.log('Error making the database query: ', errorMakingQuery);
-          res.sendStatus(500);
-          } else {
-          res.sendStatus(201);
-          }//end else
-        });//end client.query()
+    client.query('DELETE FROM tasks ' +
+    'WHERE id=$1;',
+    [taskToDelete.id],
+    function(errorMakingQuery, result){
+    done();
+    if(errorMakingQuery) {
+      console.log('Error making the database query: ', errorMakingQuery);
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(201);
       }//end else
-    });//end pool.connect()
-  }); // end router.get for /deleteTasks
+    });//end client.query()
+  }//end else
+});//end pool.connect()
+}); // end router.get for /deleteTasks
 
 //PUT route
 
