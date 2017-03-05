@@ -1,4 +1,5 @@
 console.log('JS has been sourced properly');
+var taskIdToDelete ={}
 
 $(document).ready(function(){
   console.log('jQuery has been sourced properly');
@@ -6,10 +7,8 @@ $(document).ready(function(){
 
     //listener for the new task submit button
     $('#newTaskSubmitButton').on('click',function(){
-      console.log('submit button clicked');
       var newTaskName = {};
       newTaskName.task_name = $('#taskNameInput').val();
-      console.log('I picked up this task name: ',newTaskName);
       // POST request to write new task to the db
       $.ajax({
         type: 'POST',
@@ -27,26 +26,26 @@ $(document).ready(function(){
 
     //listener for the task delete button
     $('#taskItems').on('click','.deleteButton',function(){
-      var taskIdToDelete ={}
+      var $thisRow = $(this).parent().parent()
       taskIdToDelete.id = $(this).data('taskid');
-      $(this).parent().parent().remove();
-      //modal pop-up
-      var $modal = $('#deleteConfim');
-      var $span = $('.close');
-      $modal.css('display','block');
-      // DELETE request to delete the task from the db
-      $.ajax({
-        type: 'DELETE',
-        url: '/tasks/deleteTask',
-        data: taskIdToDelete,
-        success: function(response){
-          console.log('submit successful, server response: ',response);
-        },
-        error: function(response){
-          console.log('error on submit',response);
+      swal({
+        title: "Are you sure?",
+        text: "You will not be able to recover this imaginary file!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, delete it!",
+      },
+        function(response){
+        if (response == true) {
+          console.log('you clicked ok');
+          deleteTask();
+          $thisRow.remove();
+        } else {
+          console.log('you clicked cancel');
         }
-      });// end ajax
-    }); // end DELETE button listener
+      }); //end SWAL
+    }); // end Delete listener
 
     // listener for the task complete button
     $('#taskItems').on('click','.completeCheckbox',function(){
@@ -68,10 +67,23 @@ $(document).ready(function(){
         }
       });// end ajax
     }); // end COMPLETE button listener
-
-
-
 }); //end of document.ready
+
+
+// DELETE request to delete the task from the db
+function deleteTask(){
+  $.ajax({
+    type: 'DELETE',
+    url: '/tasks/deleteTask',
+    data: taskIdToDelete,
+    success: function(response){
+      console.log('submit successful, server response: ',response);
+    },
+    error: function(response){
+      console.log('error on submit',response);
+    }
+  });// end ajax
+}//end deleteTask function
 
 
 //GET reqeust to pull from DB
@@ -85,7 +97,7 @@ function writeTasksToDom(){
       var htmlToAppend = '';
       for (var i = 0; i < response.length; i++) {
         var taskToWrite = response[i];
-        var newRowHTML = '<tr><td>'+ taskToWrite.task_name +'</td>'+
+        var newRowHTML = '<tr data-taskid="'+taskToWrite.id+'"><td>'+ taskToWrite.task_name +'</td>'+
           '<td><input type="checkbox" class="completeCheckbox" data-taskid="'+taskToWrite.id+'"'+ 'name="checkbox"></td>'+
           '<td><button type="button" class="button deleteButton" data-taskid="'+taskToWrite.id+'"'+ 'name="button">Delete</button></td></tr>';
         htmlToAppend += newRowHTML
@@ -93,6 +105,5 @@ function writeTasksToDom(){
       $('#taskItems').empty();
       $('#taskItems').append(htmlToAppend);
     }
-  });
-
-}
+  }); //end AJAX
+}//end function writeTasksToDom
