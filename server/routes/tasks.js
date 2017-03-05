@@ -100,11 +100,36 @@ router.post('/submitTask', function(req,res){
 
 //PUT route
 
-router.put('/completeTask', function(req,res){
+  router.put('/completeTask', function(req,res){
   console.log('/completeTask hit successfully');
   var taskToComplete = req.body;
   console.log('taskToComplete is set to: ',taskToComplete);
-});
+  //connect to the db with a connection from the pool
+  pool.connect(function(errorConnectingToDatabase, client, done){
+    if(errorConnectingToDatabase) {
+      // There was an error connecting to the database
+      console.log('Error connecting to database: ', errorConnectingToDatabase);
+      res.sendStatus(500);
+    } else {
+      // We connected to the database!!!
+      // Now, we're gonna' CHANGE stuff!!!!!
+      client.query('UPDATE tasks ' +
+      'SET complete=true ' +
+      'WHERE id=$1;',
+      [taskToComplete.id],
+      function(errorMakingQuery, result){
+      done();
+      if(errorMakingQuery) {
+        console.log('Error making the database query: ', errorMakingQuery);
+        res.sendStatus(500);
+        } else {
+        res.sendStatus(200);
+        }//end else
+      });//end client.query()
+    }//end else
+  });//end pool.connect()
+}); // end router.put for /completeTasks
+
 
 
 
