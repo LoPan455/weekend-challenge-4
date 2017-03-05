@@ -84,7 +84,7 @@ function writeTasksToDom(){
       for (var i = 0; i < response.length; i++) {
         var taskToWrite = response[i];
         var newRowHTML = '<tr><td>'+ taskToWrite.task_name +'</td>'+
-          '<td><button type="button" class="button completeButton" data-taskid="'+taskToWrite.id+'"'+ 'name="button">Completed!</button></td>'+
+          '<td><input type="checkbox" class="checkbox" data-taskid="'+taskToWrite.id+'"'+ 'name="checkbox"></td>'+
           '<td><button type="button" class="button deleteButton" data-taskid="'+taskToWrite.id+'"'+ 'name="button">Delete</button></td></tr>';
         htmlToAppend += newRowHTML
       }//end for Loop
