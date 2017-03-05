@@ -113,7 +113,7 @@ pool.connect(function(errorConnectingToDatabase, client, done){
       // We connected to the database!!!
       // Now, we're gonna' CHANGE stuff!!!!!
       client.query('UPDATE tasks ' +
-      'SET complete=true ' +
+      'SET complete= NOT complete ' +
       'WHERE id=$1;',
       [taskToComplete.id],
       function(errorMakingQuery, result){

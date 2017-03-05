@@ -47,11 +47,11 @@ $(document).ready(function(){
     }); // end DELETE button listener
 
     // listener for the task complete button
-    $('#taskItems').on('click','.completeButton',function(){
-      console.log('complete Button clicked');
+    $('#taskItems').on('click','.completeCheckbox',function(){
+      console.log('complete checkbox clicked');
       var taskIdToComplete = {}
       taskIdToComplete.id = $(this).data('taskid');
-      $(this).parent().prev().addClass('complete');
+      $(this).parent().prev().toggleClass('complete');
       console.log('taskID to complete is: ',taskIdToComplete);
       // POST request to update  the db
       $.ajax({
@@ -84,7 +84,7 @@ function writeTasksToDom(){
       for (var i = 0; i < response.length; i++) {
         var taskToWrite = response[i];
         var newRowHTML = '<tr><td>'+ taskToWrite.task_name +'</td>'+
-          '<td><input type="checkbox" class="checkbox" data-taskid="'+taskToWrite.id+'"'+ 'name="checkbox"></td>'+
+          '<td><input type="checkbox" class="completeCheckbox" data-taskid="'+taskToWrite.id+'"'+ 'name="checkbox"></td>'+
           '<td><button type="button" class="button deleteButton" data-taskid="'+taskToWrite.id+'"'+ 'name="button">Delete</button></td></tr>';
         htmlToAppend += newRowHTML
       }//end for Loop
