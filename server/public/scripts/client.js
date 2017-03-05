@@ -27,12 +27,14 @@ $(document).ready(function(){
 
     //listener for the task delete button
     $('#taskItems').on('click','.deleteButton',function(){
-      console.log('delete button clicked');
       var taskIdToDelete ={}
       taskIdToDelete.id = $(this).data('taskid');
-      console.log('taskID to delete is: ',taskIdToDelete);
       $(this).parent().parent().remove();
-      // POST request to write new task to the db
+      //modal pop-up
+      var $modal = $('#deleteConfim');
+      var $span = $('.close');
+      $modal.css('display','block');
+      // DELETE request to delete the task from the db
       $.ajax({
         type: 'DELETE',
         url: '/tasks/deleteTask',
