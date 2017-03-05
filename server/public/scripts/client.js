@@ -49,11 +49,9 @@ $(document).ready(function(){
 
     // listener for the task complete button
     $('#taskItems').on('click','.completeCheckbox',function(){
-      console.log('complete checkbox clicked');
       var taskIdToComplete = {}
       taskIdToComplete.id = $(this).data('taskid');
       $(this).parent().prev().toggleClass('complete');
-      console.log('taskID to complete is: ',taskIdToComplete);
       // POST request to update  the db
       $.ajax({
         type: 'PUT',
@@ -61,6 +59,7 @@ $(document).ready(function(){
         data: taskIdToComplete,
         success: function(response){
           console.log('submit successful, server response: ',response);
+          writeTasksToDom();
         },
         error: function(response){
           console.log('error on submit',response);
@@ -92,18 +91,26 @@ function writeTasksToDom(){
     type: 'GET',
     url: 'tasks/getTasks',
     success: function(response){
-      console.log('we got a response from the server: ', response);
-      //concat the html to be added to the dom for each item in the array
+      //initialize a variable to hold the HTML string we want to eventually add to the DOM
       var htmlToAppend = '';
+      //create the html string for each row we get back from the db
       for (var i = 0; i < response.length; i++) {
         var taskToWrite = response[i];
-        var newRowHTML = '<tr data-taskid="'+taskToWrite.id+'"><td>'+ taskToWrite.task_name +'</td>'+
+        var completionStatus;
+        if (taskToWrite.complete == true){
+          completionStatus = 'complete'
+        }
+        var newRowHTML = '<tr><td class="taskName '+completionStatus+'">'+ taskToWrite.task_name +'</td>'+
           '<td><input type="checkbox" class="completeCheckbox" data-taskid="'+taskToWrite.id+'"'+ 'name="checkbox"></td>'+
           '<td><button type="button" class="button deleteButton" data-taskid="'+taskToWrite.id+'"'+ 'name="button">Delete</button></td></tr>';
-        htmlToAppend += newRowHTML
+        htmlToAppend += newRowHTML;
       }//end for Loop
       $('#taskItems').empty();
       $('#taskItems').append(htmlToAppend);
+    },//end SUCCESS function
+    error: function(response){
+      console.log('We ran into an error with the GET request');
     }
+
   }); //end AJAX
 }//end function writeTasksToDom
