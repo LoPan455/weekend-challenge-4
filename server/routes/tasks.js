@@ -21,7 +21,8 @@ router.get('/getTasks', function(req,res){
       res.sendStatus(500);
     } else {
       // We connected to the database!!!
-      // Now, we're gonna' git stuff!!!!!
+      // We want records to come back sorted on completion status to cause completed tasks to appear at the bottom
+      //of the page
       client.query('SELECT * FROM "tasks" '+
       'ORDER BY complete ASC, id;', function(errorMakingQuery, result){
         done();
@@ -70,10 +71,9 @@ router.post('/submitTask', function(req,res){
 
 //DELETE Routes
 router.delete('/deleteTask', function(req,res){
-var taskToDelete =req.body;
-
-//connect to the db with a connection from the pool
-pool.connect(function(errorConnectingToDatabase, client, done){
+  var taskToDelete =req.body;
+  //connect to the db with a connection from the pool
+  pool.connect(function(errorConnectingToDatabase, client, done){
   if(errorConnectingToDatabase) {
     // There was an error connecting to the database
     console.log('Error connecting to database: ', errorConnectingToDatabase);
@@ -81,38 +81,35 @@ pool.connect(function(errorConnectingToDatabase, client, done){
   } else {
     // We connected to the database!!!
     // Now, we're gonna' DELETE stuff!!!!!
-    client.query('DELETE FROM tasks ' +
-    'WHERE id=$1;',
-    [taskToDelete.id],
-    function(errorMakingQuery, result){
-    done();
-    if(errorMakingQuery) {
-      console.log('Error making the database query: ', errorMakingQuery);
-      res.sendStatus(500);
-    } else {
-      res.sendStatus(204);
-      }//end else
-    });//end client.query()
-  }//end else
-});//end pool.connect()
+      client.query('DELETE FROM tasks ' +
+        'WHERE id=$1;',
+        [taskToDelete.id],
+        function(errorMakingQuery, result){
+          done();
+          if(errorMakingQuery) {
+            console.log('Error making the database query: ', errorMakingQuery);
+            res.sendStatus(500);
+          } else {
+            res.sendStatus(200);
+          }//end else
+      });//end client.query()
+    }//end else
+  });//end pool.connect()
 }); // end router.get for /deleteTasks
 
 //PUT route
 
   router.put('/completeTask', function(req,res){
     var taskToComplete = req.body;
-    //connect to the db with a connection from the pool
-  pool.connect(function(errorConnectingToDatabase, client, done){
+    pool.connect(function(errorConnectingToDatabase, client, done) {
     if(errorConnectingToDatabase) {
       // There was an error connecting to the database
       console.log('Error connecting to database: ', errorConnectingToDatabase);
       res.sendStatus(500);
     } else {
-      // We connected to the database!!!
-      // Now, we're gonna' CHANGE stuff!!!!!
       //The query syntax will switch the value of complete to the opposite boolean
       client.query('UPDATE tasks ' +
-      'SET complete= NOT complete ' +
+      'SET complete = NOT complete ' +
       'WHERE id=$1;',
       [taskToComplete.id],
       function(errorMakingQuery, result){

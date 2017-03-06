@@ -1,5 +1,5 @@
 console.log('JS has been sourced properly');
-var taskIdToDelete ={}
+var taskIdToDelete ={} //this object is used to delete a task
 
 $(document).ready(function(){
   console.log('jQuery has been sourced properly');
@@ -28,13 +28,15 @@ $(document).ready(function(){
     $('#taskItems').on('click','.deleteButton',function(){
       var $thisRow = $(this).parent().parent()
       taskIdToDelete.id = $(this).data('taskid');
+      //SweetAlert confirmation modal will ask to confirm choice
+      //user can cancel the operation
       swal({
         title: "Are you sure?",
-        text: "You will not be able to recover this imaginary file!",
+        text: "This task will be removed forever",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: "Yep, it's done",
       },
         function(response){
         if (response == true) {
@@ -76,10 +78,10 @@ function deleteTask(){
     url: '/tasks/deleteTask',
     data: taskIdToDelete,
     success: function(response){
-      console.log('submit successful, server response: ',response);
+      console.log(response);
     },
     error: function(response){
-      console.log('error on submit',response);
+      console.log('error on delete request',response);
     }
   });// end ajax
 }//end deleteTask function
@@ -100,7 +102,7 @@ function writeTasksToDom(){
         if (taskToWrite.complete == true){
           completionStatus = 'complete'
         }
-        var newRowHTML = '<tr><td class="taskName '+completionStatus+'">'+ taskToWrite.task_name +'</td>'+
+        var newRowHTML = '<tr class="newRow"><td class="taskName '+completionStatus+'">'+ taskToWrite.task_name +'</td>'+
           '<td><input type="checkbox" class="completeCheckbox" data-taskid="'+taskToWrite.id+'"'+ 'name="checkbox"></td>'+
           '<td><button type="button" class="button deleteButton" data-taskid="'+taskToWrite.id+'"'+ 'name="button">Delete</button></td></tr>';
         htmlToAppend += newRowHTML;
