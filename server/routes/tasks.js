@@ -21,8 +21,7 @@ router.get('/getTasks', function(req,res){
       res.sendStatus(500);
     } else {
       // We connected to the database!!!
-      // We want records to come back sorted on completion status to cause completed tasks to appear at the bottom
-      //of the page
+      // We want completed tasks to appear at the bottom of the list
       client.query('SELECT * FROM "tasks" '+
       'ORDER BY complete ASC, id;', function(errorMakingQuery, result){
         done();
@@ -35,7 +34,7 @@ router.get('/getTasks', function(req,res){
       });
     }
   });
-}); // end router.get for /getTasks
+});
 
 
 // POST routes
@@ -50,8 +49,7 @@ router.post('/submitTask', function(req,res){
         console.log('Error connecting to database: ', errorConnectingToDatabase);
         res.sendStatus(500);
       } else {
-        // We connected to the database!!!
-       // Now, we're gonna' ADD stuff!!!!!
+        // We connected to the database!!! Now, we're gonna' ADD stuff!!!!!
          client.query('INSERT INTO tasks (task_name) ' +
          'VALUES ($1);',
          [newTask.task_name],
@@ -79,8 +77,7 @@ router.delete('/deleteTask', function(req,res){
     console.log('Error connecting to database: ', errorConnectingToDatabase);
     res.sendStatus(500);
   } else {
-    // We connected to the database!!!
-    // Now, we're gonna' DELETE stuff!!!!!
+    // We connected to the database!!! Now, we're gonna' DELETE stuff!!!!!
       client.query('DELETE FROM tasks ' +
         'WHERE id=$1;',
         [taskToDelete.id],
@@ -91,11 +88,11 @@ router.delete('/deleteTask', function(req,res){
             res.sendStatus(500);
           } else {
             res.sendStatus(200);
-          }//end else
-      });//end client.query()
-    }//end else
-  });//end pool.connect()
-}); // end router.get for /deleteTasks
+          }
+      });
+    }
+  });
+});
 
 //PUT route
 
@@ -107,7 +104,7 @@ router.delete('/deleteTask', function(req,res){
       console.log('Error connecting to database: ', errorConnectingToDatabase);
       res.sendStatus(500);
     } else {
-      //The query syntax will switch the value of complete to the opposite boolean
+      //The query syntax will toggle the value of 'complete' to the opposite boolean value
       client.query('UPDATE tasks ' +
       'SET complete = NOT complete ' +
       'WHERE id=$1;',
@@ -119,11 +116,11 @@ router.delete('/deleteTask', function(req,res){
         res.sendStatus(500);
         } else {
         res.sendStatus(200);
-        }//end else
-      });//end client.query()
-    }//end else
-  });//end pool.connect()
-}); // end router.put for /completeTasks
+        }
+      });
+    }
+  });
+});
 
 
 
