@@ -4,10 +4,6 @@ body {
   background-repeat: no-repeat
 }
 
-/*#addTask {
-  background-color: #4a4d51;
-}*/
-
 h1 {
   font-family: 'Nunito Sans', sans-serif;
   text-align: center;
@@ -21,7 +17,6 @@ h1 {
 
 #addTask {
   text-align: center;
-
 }
 
 table {
@@ -32,14 +27,9 @@ table {
 }
 
 td, th {
-    /*border: 1px solid #dddddd;*/
-    text-align: center;
-    padding: 8px;
+  text-align: center;
+  padding: 8px;
 }
-
-/*tr:nth-child(even) {
-    background-color: #dddddd;
-}*/
 
 .complete {
   text-decoration: line-through;
